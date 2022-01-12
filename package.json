@@ -1,0 +1,44 @@
+{
+  "name": "next-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "storybook": "start-storybook"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kxmatejka/next-template.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kxmatejka/next-template/issues"
+  },
+  "homepage": "https://github.com/kxmatejka/next-template#readme",
+  "dependencies": {
+    "next": "^12.0.7",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "styled-components": "^5.3.3"
+  },
+  "devDependencies": {
+    "@storybook/react": "^5.3.19",
+    "@types/node": "^12.12.53",
+    "@types/react": "^17.0.38",
+    "@types/react-dom": "^17.0.11",
+    "@types/styled-components": "^5.1.7",
+    "@typescript-eslint/eslint-plugin": "^4.21.0",
+    "@typescript-eslint/parser": "^4.21.0",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-styled-components": "^1.11.1",
+    "babel-preset-react-app": "^9.1.2",
+    "eslint": "^7.24.0",
+    "storybook": "^6.4.9",
+    "typescript": "^4.5.4"
+  }
+}
