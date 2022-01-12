@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import styled from 'styled-components'
 import { Map, Marker } from 'pigeon-maps'
 import { stamenTerrain } from 'pigeon-maps/providers'
 
@@ -9,12 +10,20 @@ const MAP_MARKERS = [
       lat: 37.98381,
       lon: 23.72754,
     },
+    lifespan: {
+      from: -500,
+      to: 500,
+    },
   },
   {
     id: 'sparta',
     gps: {
       lat: 37.07116,
       lon: 22.41467,
+    },
+    lifespan: {
+      from: -700,
+      to: 100,
     },
   },
   {
@@ -23,6 +32,10 @@ const MAP_MARKERS = [
       lat: 39.95748,
       lon: 26.2389,
     },
+    lifespan: {
+      from: -1000,
+      to: -200,
+    },
   },
   {
     id: 'syracuse',
@@ -30,28 +43,77 @@ const MAP_MARKERS = [
       lat: 37.07547,
       lon: 15.28659,
     },
+    lifespan: {
+      from: -900,
+      to: 300,
+    },
   },
 ]
 
-const WorldMap = () => {
+const Container = styled.div`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const StyledRange = styled.input`
+  width: 500px;
+  margin: 20px;
+`
+
+const Slider = ({ value, onValueChange }) => {
+  const humanYear = (value >= 0) ? `${value} AC` : `${value*-1} BC`
+
   return (
-    <Map
-      height={'100vh' as any}
-      defaultCenter={[37.98381, 23.72754]}
-      defaultZoom={8}
-      provider={stamenTerrain}
-    >
-      {MAP_MARKERS.map(({id, gps}) => (
-        <Marker
-          key={id}
-          width={50}
-          anchor={[gps.lat, gps.lon]}
-          hover={true}
-          payload={id}
-          onClick={(p) => console.log('onClick', p)}
-        />
-      ))}
-    </Map>
+    <Container>
+      <StyledRange
+        type={'range'}
+        min={-1000}
+        max={1000}
+        step={10}
+        value={value}
+        onChange={e => onValueChange(parseInt(e.target.value))}
+      />
+      <div>{humanYear}</div>
+    </Container>
+  )
+}
+
+const WorldMap = () => {
+  const [currentYear, setCurrentYear] = useState(0)
+
+  return (
+    <div>
+      <Map
+        height={'100vh' as any}
+        defaultCenter={[37.98381, 23.72754]}
+        defaultZoom={8}
+        provider={stamenTerrain}
+      >
+        {MAP_MARKERS
+          .filter((marker) =>{
+            return !(marker.lifespan && (marker.lifespan.from > currentYear || marker.lifespan.to < currentYear))
+          })
+          .map(({id, gps}) => (
+            <Marker
+              key={id}
+              width={50}
+              anchor={[gps.lat, gps.lon]}
+              hover={true}
+              payload={id}
+              onClick={(p) => console.log('onClick', p)}
+            />
+          ))}
+      </Map>
+      <Slider
+        value={currentYear}
+        onValueChange={setCurrentYear}
+      />
+    </div>
   )
 }
 
