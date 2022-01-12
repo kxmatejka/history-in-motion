@@ -22,6 +22,7 @@
   "homepage": "https://github.com/kxmatejka/next-template#readme",
   "dependencies": {
     "next": "^12.0.7",
+    "pigeon-maps": "^0.19.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "styled-components": "^5.3.3"
