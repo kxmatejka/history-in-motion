@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Map, Marker } from 'pigeon-maps'
+import { Map, Overlay } from 'pigeon-maps'
 import { stamenTerrain } from 'pigeon-maps/providers'
 
 const MAP_MARKERS = [
@@ -83,6 +83,14 @@ const Slider = ({ value, onValueChange }) => {
   )
 }
 
+const City = (props) => {
+  return (
+    <Overlay {...props}>
+      <img src='https://cdn-icons-png.flaticon.com/512/4215/4215034.png' width={50}/>
+    </Overlay>
+  )
+}
+
 const WorldMap = () => {
   const [currentYear, setCurrentYear] = useState(0)
 
@@ -99,13 +107,11 @@ const WorldMap = () => {
             return !(marker.lifespan && (marker.lifespan.from > currentYear || marker.lifespan.to < currentYear))
           })
           .map(({id, gps}) => (
-            <Marker
+            <City
               key={id}
               width={50}
               anchor={[gps.lat, gps.lon]}
-              hover={true}
-              payload={id}
-              onClick={(p) => console.log('onClick', p)}
+              offset={[25, 25]}
             />
           ))}
       </Map>
