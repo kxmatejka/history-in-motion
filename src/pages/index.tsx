@@ -29,7 +29,7 @@ const Slider = ({ value, onValueChange }) => {
         type={'range'}
         min={-600}
         max={-400}
-        step={1}
+        step={10}
         value={value}
         onChange={e => onValueChange(parseInt(e.target.value))}
       />
