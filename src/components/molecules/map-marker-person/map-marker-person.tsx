@@ -6,9 +6,10 @@ const anchorDiff = (a: number[], b: number[]) => (a[0] !== b[0] || a[1] !== b[1]
 type MapMarkerPersonProps = {
   name: string
   anchor: [number, number]
+  state: 'LIVE' | 'DEAD'
 }
 
-export const MapMarkerPerson: FC<MapMarkerPersonProps> = ({name, ...props}) => {
+export const MapMarkerPerson: FC<MapMarkerPersonProps> = ({name, state, ...props}) => {
   const prevAnchorRef = useRef([0, 0])
   const shouldAnimate = anchorDiff(props.anchor, prevAnchorRef.current)
 
@@ -21,7 +22,7 @@ export const MapMarkerPerson: FC<MapMarkerPersonProps> = ({name, ...props}) => {
       {...props}
       shouldAnimate={shouldAnimate}
     >
-      <MarkerPerson name={name}/>
+      <MarkerPerson name={name} state={state}/>
     </MapOverlay>
   )
 }

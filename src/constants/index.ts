@@ -24,7 +24,7 @@ export const PEOPLE = [
     name: 'Anaxagoras',
     lifetime: {
       from: -500,
-      to: -428,
+      to: -378,
     },
     residence: [
       {
@@ -47,6 +47,14 @@ export const PEOPLE = [
           to: -428,
         },
         gps: CITIES.pityussa.gps,
+      },
+      {
+        period: {
+          from: -428,
+          to: -378,
+        },
+        gps: CITIES.pityussa.gps,
+        state: 'DEAD',
       },
     ],
   },

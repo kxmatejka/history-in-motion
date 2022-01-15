@@ -63,12 +63,14 @@ const WorldMap = () => {
             }
 
             const gps = residence.gps
+            const state = residence.state ? residence.state : 'LIVE'
 
             return (
               <MapMarkerPerson
                 key={person.name}
                 name={person.name}
                 anchor={[gps.lat, gps.lon]}
+                state={state as 'LIVE' | 'DEAD'}
               />
             )
           })
