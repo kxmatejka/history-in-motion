@@ -14,25 +14,24 @@ type MapOverlayProps = {
 export const MapOverlay: FC<MapOverlayProps> = ({left, top, shouldAnimate, children}) => {
   const overlayRef = useRef<HTMLDivElement>()
   const isAnimating = useRef(false)
-  const animationRef = useRef<Animation>()
 
   useEffect(() => {
     overlayRef.current.style.transform = `translate(${left}px, ${top}px)`
   }, [])
 
   useEffect(() => {
-    if (!isAnimating.current) {
+    if (shouldAnimate) {
       isAnimating.current = true
 
-      animationRef.current = overlayRef.current.animate([
+      const animation = overlayRef.current.animate([
         {
           transform: `translate(${left}px, ${top}px)`,
         },
       ], {
-        duration: 500,
+        duration: 5000,
       })
 
-      animationRef.current.onfinish = () => {
+      animation.onfinish = () => {
         if (overlayRef.current) {
           overlayRef.current.style.transform = `translate(${left}px, ${top}px)`
         }
