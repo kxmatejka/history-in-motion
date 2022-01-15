@@ -3,7 +3,7 @@ import {MarkerPerson} from '@/src/components/atoms/marker-person'
 
 const anchorDiff = (a: number[], b: number[]) => (a[0] !== b[0] || a[1] !== b[1])
 
-const Overlay: FC<any> = ({left, top, style, className, animate, children}) => {
+const Overlay: FC<any> = ({left, top, shouldAnimate, children}) => {
   const overlayRef = useRef<HTMLDivElement>()
   const isAnimating = useRef(false)
   const animationRef = useRef<Animation>()
@@ -21,7 +21,7 @@ const Overlay: FC<any> = ({left, top, style, className, animate, children}) => {
           transform: `translate(${left}px, ${top}px)`,
         },
       ], {
-        duration: 1000,
+        duration: 500,
       })
 
       animationRef.current.onfinish = () => {
@@ -31,7 +31,7 @@ const Overlay: FC<any> = ({left, top, style, className, animate, children}) => {
         isAnimating.current = false
       }
     }
-  }, [animate])
+  }, [shouldAnimate])
 
   useEffect(() => {
     if (!isAnimating.current && overlayRef.current) {
@@ -43,9 +43,7 @@ const Overlay: FC<any> = ({left, top, style, className, animate, children}) => {
     <div
       style={{
         position: 'absolute',
-        ...(style || {}),
       }}
-      className={className ? `${className} pigeon-click-block` : 'pigeon-click-block'}
       ref={overlayRef}
     >
       {children}
@@ -59,18 +57,17 @@ type MapMarkerPersonProps = {
 }
 
 export const MapMarkerPerson: FC<MapMarkerPersonProps> = ({name, ...props}) => {
-  const anchorRef = useRef([0, 0])
+  const prevAnchorRef = useRef([0, 0])
+  const shouldAnimate = anchorDiff(props.anchor, prevAnchorRef.current)
 
   useEffect(() => {
-    anchorRef.current = props.anchor
-  }, [props])
-
-  const animate = anchorDiff(props.anchor, anchorRef.current)
+    prevAnchorRef.current = props.anchor
+  }, [props.anchor])
 
   return (
     <Overlay
       {...props}
-      animate={animate}
+      shouldAnimate={shouldAnimate}
     >
       <MarkerPerson name={name}/>
     </Overlay>

@@ -39,12 +39,11 @@ const Slider = ({ value, onValueChange }) => {
 }
 
 const WorldMap = () => {
-  const [currentYear, setCurrentYear] = useState(0)
+  const [currentYear, setCurrentYear] = useState(-500)
 
   return (
     <>
       <Map
-        height={'100vh' as any}
         defaultCenter={[37.98381, 23.72754]}
         defaultZoom={8}
         provider={stamenTerrain}

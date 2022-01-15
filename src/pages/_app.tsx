@@ -7,6 +7,11 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     background: #fff;
+
+    & > div {
+      height: 100vh;
+      overflow: hidden;
+    }
   }
 `
 
