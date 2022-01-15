@@ -1,19 +1,57 @@
 import React, {FC, useEffect, useRef} from 'react'
-import styled from 'styled-components'
-import {Overlay} from 'pigeon-maps'
 import {MarkerPerson} from '@/src/components/atoms/marker-person'
 
-const anchorDiff = (a: number[], b: number[]) => !(a[0] === b[0] && a[1] === b[1])
+const anchorDiff = (a: number[], b: number[]) => (a[0] !== b[0] || a[1] !== b[1])
 
-type StyledOverlayProps = {
-  animate: boolean
+const Overlay: FC<any> = ({left, top, style, className, animate, children}) => {
+  const overlayRef = useRef<HTMLDivElement>()
+  const isAnimating = useRef(false)
+  const animationRef = useRef<Animation>()
+
+  useEffect(() => {
+    overlayRef.current.style.transform = `translate(${left}px, ${top}px)`
+  }, [])
+
+  useEffect(() => {
+    if (!isAnimating.current) {
+      isAnimating.current = true
+
+      animationRef.current = overlayRef.current.animate([
+        {
+          transform: `translate(${left}px, ${top}px)`,
+        },
+      ], {
+        duration: 1000,
+      })
+
+      animationRef.current.onfinish = () => {
+        if (overlayRef.current) {
+          overlayRef.current.style.transform = `translate(${left}px, ${top}px)`
+        }
+        isAnimating.current = false
+      }
+    }
+  }, [animate])
+
+  useEffect(() => {
+    if (!isAnimating.current && overlayRef.current) {
+      overlayRef.current.style.transform = `translate(${left}px, ${top}px)`
+    }
+  }, [left, top])
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        ...(style || {}),
+      }}
+      className={className ? `${className} pigeon-click-block` : 'pigeon-click-block'}
+      ref={overlayRef}
+    >
+      {children}
+    </div>
+  )
 }
-
-const StyledOverlay = styled(Overlay).attrs<StyledOverlayProps>((props) => ({
-  animate: props.animate,
-}))<StyledOverlayProps>`
-  transition: ${p => p.animate ? 'transform 1s linear' : 'none'};
-`
 
 type MapMarkerPersonProps = {
   name: string
@@ -27,9 +65,14 @@ export const MapMarkerPerson: FC<MapMarkerPersonProps> = ({name, ...props}) => {
     anchorRef.current = props.anchor
   }, [props])
 
+  const animate = anchorDiff(props.anchor, anchorRef.current)
+
   return (
-    <StyledOverlay {...props} animate={anchorDiff(props.anchor, anchorRef.current)}>
+    <Overlay
+      {...props}
+      animate={animate}
+    >
       <MarkerPerson name={name}/>
-    </StyledOverlay>
+    </Overlay>
   )
 }
