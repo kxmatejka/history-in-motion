@@ -12,6 +12,6 @@ module.exports = {
     return config
   },
   stories: [
-    '../stories/**/*.tsx'
+    '../src/**/*.story.tsx'
   ]
 }

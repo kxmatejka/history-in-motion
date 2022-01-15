@@ -14,12 +14,12 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-const SpringApp = ({Component, pageProps}) => {
+const HistoryInMotion = ({Component, pageProps}) => {
   return (
     <>
       <Head>
         <title>History in Motion</title>
-        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css' rel='stylesheet' />
+        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css' rel='stylesheet'/>
       </Head>
       <GlobalStyle/>
       <Component {...pageProps} />
@@ -27,4 +27,4 @@ const SpringApp = ({Component, pageProps}) => {
   )
 }
 
-export default SpringApp
+export default HistoryInMotion

@@ -1,108 +1,9 @@
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
-import { Map, Overlay } from 'pigeon-maps'
-import { stamenTerrain } from 'pigeon-maps/providers'
-
-const CITIES = {
-  athens: {
-    gps: {
-      lat: 37.98381,
-      lon: 23.72754,
-    },
-  },
-  klazomenai: {
-    gps: {
-      lat: 38.3628,
-      lon: 26.76958,
-    },
-  },
-  pityussa: {
-    gps: {
-      lat: 40.34548,
-      lon: 26.6843,
-    },
-  },
-}
-
-const MAP_MARKERS = [
-  {
-    id: 'athens',
-    gps: {
-      lat: 37.98381,
-      lon: 23.72754,
-    },
-    lifespan: {
-      from: -500,
-      to: 500,
-    },
-  },
-  {
-    id: 'sparta',
-    gps: {
-      lat: 37.07116,
-      lon: 22.41467,
-    },
-    lifespan: {
-      from: -700,
-      to: 100,
-    },
-  },
-  {
-    id: 'troy',
-    gps: {
-      lat: 39.95748,
-      lon: 26.2389,
-    },
-    lifespan: {
-      from: -1000,
-      to: -200,
-    },
-  },
-  {
-    id: 'syracuse',
-    gps: {
-      lat: 37.07547,
-      lon: 15.28659,
-    },
-    lifespan: {
-      from: -900,
-      to: 300,
-    },
-  },
-]
-
-const PEOPLE_MARKERS = [
-  {
-    name: 'Anaxagoras',
-    lifetime: {
-      from: -500,
-      to: -428,
-    },
-    residence: [
-      {
-        period: {
-          from: -500,
-          to: -480,
-        },
-        gps: CITIES.klazomenai.gps,
-      },
-      {
-        period: {
-          from: -480,
-          to: -450,
-        },
-        gps: CITIES.athens.gps,
-      },
-      {
-        period: {
-          from: -450,
-          to: -428,
-        },
-        gps: CITIES.pityussa.gps,
-      },
-    ],
-  },
-]
+import {Map, Overlay} from 'pigeon-maps'
+import {stamenTerrain} from 'pigeon-maps/providers'
+import {PEOPLE} from '@/src/constants'
+import {MarkerPerson} from '@/src/components/atoms/marker-person'
 
 const Container = styled.div`
   position: absolute;
@@ -137,38 +38,10 @@ const Slider = ({ value, onValueChange }) => {
   )
 }
 
-const City = (props) => {
-  return (
-    <Overlay {...props}>
-      <img src='https://cdn-icons-png.flaticon.com/512/4215/4215034.png' width={50}/>
-    </Overlay>
-  )
-}
-
-const PersonLabel = styled.p`
-  background: #eee;
-  padding: 2px;
-  border-radius: 5px;
-  font-size: 0.8rem;
-
-  display: flex;
-  align-items: center;
-
-  &::before {
-    content: "";
-    display: block;
-    background: #000;
-    width: 10px;
-    height: 10px;
-    margin-right: 5px;
-    border-radius: 50%;
-  }
-`
-
 const Person = ({name, ...props}) => {
   return (
     <Overlay {...props} className={props.className + ' anime'}>
-      <PersonLabel>{name}</PersonLabel>
+      <MarkerPerson name={name}/>
     </Overlay>
   )
 }
@@ -177,28 +50,15 @@ const WorldMap = () => {
   const [currentYear, setCurrentYear] = useState(0)
 
   return (
-    <div>
+    <>
       <Map
         height={'100vh' as any}
         defaultCenter={[37.98381, 23.72754]}
         defaultZoom={8}
         provider={stamenTerrain}
       >
-        {/*MAP_MARKERS
-          .filter((marker) =>{
-            return !(marker.lifespan && (marker.lifespan.from > currentYear || marker.lifespan.to < currentYear))
-          })
-          .map(({id, gps}) => (
-            <Person
-              key={id}
-              width={50}
-              anchor={[gps.lat, gps.lon]}
-              offset={[25, 25]}
-            />
-          ))*/}
-
         {
-          PEOPLE_MARKERS.filter((marker) => {
+          PEOPLE.filter((marker) => {
             return !(marker.lifetime && (marker.lifetime.from > currentYear || marker.lifetime.to < currentYear))
           }).map((person) => {
             const residence = person.residence.find((residence) => {
@@ -229,7 +89,7 @@ const WorldMap = () => {
         value={currentYear}
         onValueChange={setCurrentYear}
       />
-    </div>
+    </>
   )
 }
 
