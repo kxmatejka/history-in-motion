@@ -8,10 +8,6 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     background: #fff;
   }
-  
-  .anime {
-    transition: 1s ease-in-out;
-  }
 `
 
 const HistoryInMotion = ({Component, pageProps}) => {

@@ -1,9 +1,9 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-import {Map, Overlay} from 'pigeon-maps'
+import {Map} from 'pigeon-maps'
 import {stamenTerrain} from 'pigeon-maps/providers'
 import {PEOPLE} from '@/src/constants'
-import {MarkerPerson} from '@/src/components/atoms/marker-person'
+import {MapMarkerPerson} from '@/src/components/molecules/map-marker-person'
 
 const Container = styled.div`
   position: absolute;
@@ -38,14 +38,6 @@ const Slider = ({ value, onValueChange }) => {
   )
 }
 
-const Person = ({name, ...props}) => {
-  return (
-    <Overlay {...props} className={props.className + ' anime'}>
-      <MarkerPerson name={name}/>
-    </Overlay>
-  )
-}
-
 const WorldMap = () => {
   const [currentYear, setCurrentYear] = useState(0)
 
@@ -74,12 +66,10 @@ const WorldMap = () => {
             const gps = residence.gps
 
             return (
-              <Person
+              <MapMarkerPerson
                 key={person.name}
                 name={person.name}
-                width={50}
                 anchor={[gps.lat, gps.lon]}
-                offset={[25, 25]}
               />
             )
           })
