@@ -1,55 +1,7 @@
 import React, {FC, useEffect, useRef} from 'react'
-import {MarkerPerson} from '@/src/components/atoms/marker-person'
+import {MapOverlay, MarkerPerson} from '@/src/components/atoms'
 
 const anchorDiff = (a: number[], b: number[]) => (a[0] !== b[0] || a[1] !== b[1])
-
-const Overlay: FC<any> = ({left, top, shouldAnimate, children}) => {
-  const overlayRef = useRef<HTMLDivElement>()
-  const isAnimating = useRef(false)
-  const animationRef = useRef<Animation>()
-
-  useEffect(() => {
-    overlayRef.current.style.transform = `translate(${left}px, ${top}px)`
-  }, [])
-
-  useEffect(() => {
-    if (!isAnimating.current) {
-      isAnimating.current = true
-
-      animationRef.current = overlayRef.current.animate([
-        {
-          transform: `translate(${left}px, ${top}px)`,
-        },
-      ], {
-        duration: 500,
-      })
-
-      animationRef.current.onfinish = () => {
-        if (overlayRef.current) {
-          overlayRef.current.style.transform = `translate(${left}px, ${top}px)`
-        }
-        isAnimating.current = false
-      }
-    }
-  }, [shouldAnimate])
-
-  useEffect(() => {
-    if (!isAnimating.current && overlayRef.current) {
-      overlayRef.current.style.transform = `translate(${left}px, ${top}px)`
-    }
-  }, [left, top])
-
-  return (
-    <div
-      style={{
-        position: 'absolute',
-      }}
-      ref={overlayRef}
-    >
-      {children}
-    </div>
-  )
-}
 
 type MapMarkerPersonProps = {
   name: string
@@ -65,11 +17,11 @@ export const MapMarkerPerson: FC<MapMarkerPersonProps> = ({name, ...props}) => {
   }, [props.anchor])
 
   return (
-    <Overlay
+    <MapOverlay
       {...props}
       shouldAnimate={shouldAnimate}
     >
       <MarkerPerson name={name}/>
-    </Overlay>
+    </MapOverlay>
   )
 }
